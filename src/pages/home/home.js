@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './home.css';
-// import { history } from "react-router-dom";
-// import history from '../../history';
+import {withRouter} from 'react-router';
 import MovieService from "../../services/movieService";
 import MovieMedia from "../../components/movieMedia";
 
@@ -19,7 +18,7 @@ import {
  } from 'reactstrap';
 
 
-class Home extends Component {
+ export class Home extends Component {
 
   constructor() {
     super();
@@ -43,7 +42,10 @@ class Home extends Component {
     // let history = useHistory();
     console.log(movie);
     // context.router.history.push('/my-new-location')
-    this.props.history.push('/movieInfo');
+    this.props.history.push({
+      pathname: '/movieInfo',
+      imdbID: movie.imdbID,
+    });
   }
 
   publish() {
@@ -110,7 +112,7 @@ class Home extends Component {
           <div className="col-md-12">
             <br></br>
             <h4>Search Result: </h4>
-            {/* {!this.state.movieList.length} */}
+            {this.state.movieList.length === 0 && <span>No results to show</span>}
             <ul className="list-group">
               {this.state.movieList &&
                 this.state.movieList.map((movie) => (
@@ -126,4 +128,4 @@ class Home extends Component {
   }
 }
 
-export { Home };
+export default withRouter(Home);

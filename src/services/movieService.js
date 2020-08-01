@@ -27,7 +27,6 @@ const apikey = "apikey=408deef9";
 // };
 
 const findByTitle = ({title, year}) => {
-
     let url = `?${apikey}`;
     
     if (title !== "") {
@@ -40,7 +39,14 @@ const findByTitle = ({title, year}) => {
 
     url = url + '&type=movie';
 
-     return api.get(url);
+    return api.get(url);
+};
+
+const findById= (id) => {
+    let url = `?${apikey}`;
+    url = url + '&i=' + id;
+
+    return api.get(url);
 };
 
 export default {
@@ -50,5 +56,6 @@ export default {
 //   update,
 //   remove,
 //   removeAll,
-  findByTitle
+  findByTitle,
+  findById
 };

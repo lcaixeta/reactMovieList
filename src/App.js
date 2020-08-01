@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Switch } from 'react-router-dom';
 import { Route } from "react-router";
 import history from './history'
-import { Home } from "./pages/home/home";
+import Home from "./pages/home/home";
 import MovieInfo from "./pages/movieInfo/movieInfo"
 
 const App = () => 

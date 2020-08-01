@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
 import './movieInfo.css';
-// import { history } from "react-router-dom";
-import {withRouter} from 'react-router';
-import history from '../../history';
 import MovieService from "../../services/movieService";
+import {withRouter} from 'react-router';
 
 import { 
   Card,
   CardBody,
-  Button,
   Row,
-  Col,
-  Label,
-  Input,
-  Form,
-  FormGroup
+  Col
  } from 'reactstrap';
 
 
@@ -23,14 +16,18 @@ import {
   constructor() {
     super();
     this.state = {
-      movieTitle: "",
-      movieYear: "",
-      movieList: [],
+      movie: {}
     };
       
-    this.publish = this.publish.bind(this);
+    this.getMovieInfo = this.getMovieInfo.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
+
+  componentDidMount() {
+    if (this.props.location.imdbID) {
+      this.getMovieInfo(this.props.location.imdbID);
+    }
+   }
 
   handleChange({ target }) {
     this.setState({
@@ -38,18 +35,12 @@ import {
     });
   }
 
-  handleMovieClick(movie) {
-    // let history = useHistory();
-    console.log(movie);
-    // context.router.history.push('/my-new-location')
-    history.push('/movieInfo');
-  }
-
-  publish() {
-    MovieService.findByTitle({title: this.state.movieTitle, year: this.state.movieYear})
+  getMovieInfo(id) {
+    MovieService.findById(id)
       .then(response => {
+        console.log('Response', response.data);
         this.setState({
-          movieList: response.data.Search
+          movie: response.data
         });
       })
       .catch(e => {
@@ -60,51 +51,159 @@ import {
   render() { 
     return (
       <div className="container">
-        <header className="container-header">
-          {/* <Button onClick={() => this.createOrder(1,1)}>Abrir Comanda</Button> */}
-          <h3>Movie Info</h3>
-          <Row>
-            <Col sm="12">
-              <Card body inverse style={{ backgroundColor: 'white' }}>
-                <CardBody className="Card-body">
-                  {/* <Form>
-                    <FormGroup row>
-                      <Col sm={6}>
-                        <Label for="movieTitle">Title: </Label>
+          {this.state.movie &&
+            <Row>
+              <Col sm="3">
+                <Card body inverse style={{ backgroundColor: 'white' }}>
+                  <CardBody className="Card-body">
+                    <img  alt="movie poster" className="photo" src={ this.state.movie.Poster }/>
+                  </CardBody>
+                </Card>
+              </Col>
+
+              <Col sm="8">
+                <Row>
+                  <Card body inverse style={{ backgroundColor: 'white' }}>
+                    <CardBody className="Card-body">
+                      <Col sm={12}>
+                        <Row>
+                          <Col sm={12}>
+                            <h1> { this.state.movie.Title } </h1>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col sm={6}>
+                            { this.state.movie.Genre }
+                          </Col>
+                          <Col sm={6}>
+                            { this.state.movie.Year }
+                          </Col>
+                        </Row>
                       </Col>
-                      <Col sm={6}>
-                        <Input 
-                          type="text"
-                          name="movieTitle"
-                          id="movieTitle"
-                          placeholder="Insert the movie title here"
-                          value={ this.state.movieTitle }
-                          onChange={ this.handleChange }
-                          />
+                    </CardBody>
+                  </Card>
+                </Row>
+                
+                <br></br>
+                
+                <Row>
+                  <Card body inverse style={{ backgroundColor: 'white' }}>
+                    <CardBody className="Card-body">
+                      <Col sm={12}>
+                        <Row>
+                          <Col sm={6}>
+                            <h1> Information </h1>
+                          </Col>
+                        </Row>
+                        
+                        <Row>
+                          <Col sm={12}>
+                            <p className="text-muted">{ this.state.movie.Plot }</p>
+                          </Col>
+                        </Row>
+
+                        <Row>
+                          <Col sm={6}>
+                            <label>Director: </label>
+                            <p className="text-muted">{ this.state.movie.Director }</p>
+                          </Col>
+                          <Col sm={6}>
+                            <label>Actors: </label>
+                            <p className="text-muted">{ this.state.movie.Actors }</p>
+                          </Col>
+                        </Row>
+
+                        <Row>
+                          <Col sm={6}>
+                            <label>Awards: </label>
+                            <p className="text-muted">{ this.state.movie.Awards }</p>
+                          </Col>
+                          <Col sm={6}>
+                            <label>BoxOffice: </label>
+                            <p className="text-muted">{ this.state.movie.BoxOffice }</p>
+                          </Col>
+                        </Row>
+
+                        <Row>
+                          <Col sm={6}>
+                            <label>Country: </label>
+                            <p className="text-muted">{ this.state.movie.Country }</p>
+                          </Col>
+                          <Col sm={6}>
+                            <label>DVD: </label>
+                            <p className="text-muted">{ this.state.movie.DVD }</p>
+                          </Col>
+                        </Row>
+
+                        <Row>
+                          <Col sm={6}>
+                            <label>Language: </label>
+                            <p className="text-muted">{ this.state.movie.Language }</p>
+                          </Col>
+                          <Col sm={6}>
+                            <label>Metascore: </label>
+                            <p className="text-muted">{ this.state.movie.Metascore }</p>
+                          </Col>
+                        </Row>
+                        
+                        <Row>
+                          <Col sm={6}>
+                            <label>Production: </label>
+                            <p className="text-muted">{ this.state.movie.Production }</p>
+                          </Col>
+                          <Col sm={6}>
+                            <label>Rated: </label>
+                            <p className="text-muted">{ this.state.movie.Rated }</p>
+                          </Col>
+                        </Row>
+
+                        <Row>
+                          <Col sm={6}>
+                            <label>Released: </label>
+                            <p className="text-muted">{ this.state.movie.Released }</p>
+                          </Col>
+                          <Col sm={6}>
+                            <label>Runtime: </label>
+                            <p className="text-muted">{ this.state.movie.Runtime }</p>
+                          </Col>
+                        </Row>
+
+                        <Row>
+                          <Col sm={6}>
+                            <label>Writer: </label>
+                            <p className="text-muted">{ this.state.movie.Writer }</p>
+                          </Col>
+                          <Col sm={6}>
+                            <label>Year: </label>
+                            <p className="text-muted">{ this.state.movie.Year }</p>
+                          </Col>
+                        </Row>
+
+                        <Row>
+                          <Col sm={6}>
+                            <label>imdbRating: </label>
+                            <p className="text-muted">{ this.state.movie.imdbRating }</p>
+                          </Col>
+                          <Col sm={6}>
+                            <label>imdbVotes: </label>
+                            <p className="text-muted">{ this.state.movie.imdbVotes }</p>
+                          </Col>
+                        </Row>
+
+                        <Row>
+                          <Col sm={12}>
+                            <label>Website: </label>
+                            <p className="text-muted">{ this.state.movie.Website }</p>
+                          </Col>
+                        </Row>
+
                       </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                      <Col sm={6}>
-                        <Label for="movieYear">Year:</Label>
-                      </Col>
-                      <Col sm={6}>
-                        <Input
-                          type="numer"
-                          name="movieYear"
-                          id="movieYear"
-                          placeholder="Insert the movie year here"
-                          value={ this.state.movieYear }
-                          onChange={ this.handleChange }
-                          />
-                      </Col>
-                    </FormGroup>
-                    <Button onClick={ this.publish }>Submit</Button>
-                  </Form> */}
-                </CardBody>
-              </Card>
-          </Col>
-        </Row>
-        </header>
+                    </CardBody>
+                  </Card>
+                </Row>
+            </Col>            
+          </Row>
+        }
       </div>
     );
   }

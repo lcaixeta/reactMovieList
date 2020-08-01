@@ -1,19 +1,27 @@
-.container {
-    text-align: center;
-  }
 
-  .container-header {
-    background-color: #F2F2F2;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: #1b1f2f;
-  }
-  
-  .container-link {
-    color: #09d3ac;
-  }
-  
+.container {
+  background-color: #262d43;
+  min-height: 100vh;
+  max-width: 100% !important;
+  padding: 20px;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.container-link {
+  color: #09d3ac;
+}
+
+.photo {
+  height: 300px;
+  width: 210px;
+}
+
+p {
+  font-size: 18px;
+}
+
+label {
+  font-size: 18px;
+  font-weight: bold;
+}
