@@ -2,20 +2,19 @@ import React from 'react';
 import { Row, Col, Card, CardBody, Label } from 'reactstrap';
 import './movieMedia.css';
 
-const MovieMedia = () => {
+const MovieMedia = ({ movie, onClick }) => {
   return (
-    <Card body inverse style={{ backgroundColor: 'white' }}>
-        <CardBody className="Card-body">
+    <Card style={{ backgroundColor: 'white', marginTop: '5px' }} onClick={onClick}>
+        <CardBody className="item">
             <Row>
                 <Col sm={4}>
-                    <img  alt="boohoo" className="photo" src={'https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg'}/>
+                    <img  alt="movie poster" className="photo" src={ movie.Poster }/>
                 </Col>
                 <Col sm={8}>
-                    <Label >Title </Label>
+                    <Label >{ movie.Title } </Label>
                 </Col>
             </Row>
         </CardBody>
-     
     </Card>
   );
 };

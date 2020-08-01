@@ -31,15 +31,14 @@ const findByTitle = ({title, year}) => {
     let url = `?${apikey}`;
     
     if (title !== "") {
-        console.log("title");
         url = url + '&s=' + title;
     }
 
     if (year !== "") {
-        console.log("year");
         url = url + '&y=' + year;
     }
-    console.log(url);
+
+    url = url + '&type=movie';
 
      return api.get(url);
 };

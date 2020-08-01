@@ -2,6 +2,7 @@
     height: 90px;
     width: 70px;
   }
-.Card-body {
-color:#1b1f2f
+.item {
+color:#1b1f2f;
+margin: 5px 0px 5px 0px;
 }

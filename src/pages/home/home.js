@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import './home.css';
-import axios from 'axios';
-// import { withRouter } from "react-router-dom";
+// import { history } from "react-router-dom";
+// import history from '../../history';
 import MovieService from "../../services/movieService";
 import MovieMedia from "../../components/movieMedia";
+
 
 import { 
   Card,
@@ -11,8 +12,6 @@ import {
   Button,
   Row,
   Col,
-  InputGroup,
-  InputGroupAddon,
   Label,
   Input,
   Form,
@@ -40,20 +39,19 @@ class Home extends Component {
     });
   }
 
+  handleMovieClick(movie) {
+    // let history = useHistory();
+    console.log(movie);
+    // context.router.history.push('/my-new-location')
+    this.props.history.push('/movieInfo');
+  }
+
   publish() {
     MovieService.findByTitle({title: this.state.movieTitle, year: this.state.movieYear})
       .then(response => {
-        console.log(response.data.Search);
         this.setState({
           movieList: response.data.Search
         });
-        // setTutorial({
-        //   id: response.data.id,
-        //   title: response.data.title,
-        //   description: response.data.description,
-        //   published: response.data.published
-        // });
-        // setSubmitted(true);
       })
       .catch(e => {
         console.log(e);
@@ -70,7 +68,7 @@ class Home extends Component {
             <Col sm="12">
               <Card body inverse style={{ backgroundColor: 'white' }}>
                 <CardBody className="Card-body">
-                  <Form mt-3>
+                  <Form>
                     <FormGroup row>
                       <Col sm={6}>
                         <Label for="movieTitle">Title: </Label>
@@ -110,24 +108,13 @@ class Home extends Component {
 
         <Row>
           <div className="col-md-12">
-            <h4>Tutorials List</h4>
-
+            <br></br>
+            <h4>Search Result: </h4>
+            {/* {!this.state.movieList.length} */}
             <ul className="list-group">
-              {console.log(this.state.movieList)}
               {this.state.movieList &&
-                this.state.movieList.map((movie, index) => (
-                //   <li
-                //     className={
-                //       "list-group-item " + (index === currentIndex ? "active" : "")
-                //     }
-                //     onClick={() => setActiveTutorial(tutorial, index)}
-                //     key={index}
-                //   >
-                //     {tutorial.title}
-                //   </li>
-                  // <li>
-                    <MovieMedia/>
-                  // </li>
+                this.state.movieList.map((movie) => (
+                    <MovieMedia movie={movie} onClick={() => this.handleMovieClick(movie)}/>
                 ))}
 
             </ul>
