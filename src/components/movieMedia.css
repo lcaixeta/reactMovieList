@@ -1,8 +1,9 @@
-.photo {
-  height: 70px;
-  width: 50px;
+.photo-item {
+  height: 100px;
+  width: 80px;
 }
 .item {
 color:#1b1f2f;
 margin: 5px 0px 5px 0px;
+cursor: pointer;
 }

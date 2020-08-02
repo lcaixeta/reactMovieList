@@ -19,5 +19,13 @@
 
 .Card-body {
   color:#1b1f2f
-  }
-  
+}
+
+.order-label {
+  text-align: left;
+  font-size: 20;
+}
+ 
+.order-buttons {
+  text-align: end;
+}

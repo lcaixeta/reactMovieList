@@ -8,7 +8,7 @@ const MovieMedia = ({ movie, onClick }) => {
         <CardBody className="item">
             <Row>
                 <Col sm={4}>
-                    <img  alt="movie poster" className="photo" src={ movie.Poster }/>
+                    <img  alt="movie poster" className="photo-item" src={ movie.Poster }/>
                 </Col>
                 <Col sm={8}>
                     <Label >{ movie.Title } </Label>

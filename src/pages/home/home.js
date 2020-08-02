@@ -9,6 +9,7 @@ import {
   Card,
   CardBody,
   Button,
+  ButtonGroup,
   Row,
   Col,
   Label,
@@ -49,6 +50,30 @@ import {
     this.props.history.push({
       pathname: '/movieInfo',
       imdbID: movie.imdbID,
+    });
+  }
+
+  handleUpOrder() {
+    const listToOrder = this.state.movieList;
+    this.state.movieList.sort(function(a, b){
+      if(a.Title < b.Title) { return -1; }
+      if(a.Title > b.Title) { return 1; }
+      return 0;
+     })
+    this.setState({
+      movieList: listToOrder
+    });
+  }
+
+  handleDownOrder() {
+    const listToOrder = this.state.movieList;
+    this.state.movieList.sort(function(a, b){
+      if(a.Title > b.Title) { return -1; }
+      if(a.Title < b.Title) { return 1; }
+      return 0;
+     })
+    this.setState({
+      movieList: listToOrder
     });
   }
 
@@ -130,13 +155,27 @@ import {
           <div className="col-md-12">
             <br></br>
             <h4>Search Result: </h4>
+            <br></br>
+            {(this.state.movieList && this.state.movieList.length > 0) &&
+              <FormGroup row>
+                <Col sm={6} className="order-label">
+                  <h4>Alphabetical Order:</h4>
+                </Col>
+                <Col sm={6} className="order-buttons">
+                <ButtonGroup >
+                  <Button onClick={() => this.handleUpOrder()}>Up</Button>
+                  <Button onClick={() => this.handleDownOrder()}>Down</Button>
+                </ButtonGroup>
+                </Col>
+              </FormGroup>
+            }
             {( !this.state.movieList || typeof this.state.movieList === 'undefined' || this.state.movieList.length === 0 ) && <span>No results to show</span>}
             <ul className="list-group">
-              {this.state.movieList &&
-                this.state.movieList.map((movie) => (
-                    <MovieMedia movie={movie} onClick={() => this.handleMovieClick(movie)}/>
-                ))}
-
+              {this.state.movieList && 
+                  this.state.movieList.map((movie) => (
+                      <MovieMedia movie={movie} onClick={() => this.handleMovieClick(movie)}/>
+                  ))
+              }
             </ul>
           </div>
         </Row>
