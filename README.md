@@ -1,5 +1,4 @@
 # reactMovieList
-React Js application that uses OMDb API to search a movie by title and realesed year and shows its informations.
 Aplicação em React JS que usa a API OMDB para buscar filmes pot título e ano de lançamento e mostrar suas infomrções.
 
 - Como Rodar:
