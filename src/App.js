@@ -4,12 +4,20 @@ import { Route } from "react-router";
 import history from './history'
 import Home from "./pages/home/home";
 import MovieInfo from "./pages/movieInfo/movieInfo"
+import FullPageLoader from "./components/FullPageLoader/fullPageLoader"
+import {withRouter} from 'react-router';
+import { Provider } from "react-redux";
+import configureStore from "./store";
+
 
 const App = () => 
-<BrowserRouter history={history}>
-    <Switch>
-      <Route exact path="/" component={Home} />
-      <Route path="/movieInfo" component={MovieInfo} />
-    </Switch>
-</BrowserRouter>;
+<Provider store={configureStore()}>
+    <BrowserRouter history={history}>
+        <Switch>
+        <Route exact path="/" component={withRouter(Home)} />
+        <Route path="/movieInfo" component={withRouter(MovieInfo)} />
+        </Switch>
+    </BrowserRouter>
+    <FullPageLoader/>
+</Provider>;
 export default App;

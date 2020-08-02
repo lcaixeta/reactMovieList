@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './home.css';
-import {withRouter} from 'react-router';
 import MovieService from "../../services/movieService";
 import MovieMedia from "../../components/movieMedia";
-
+import {connect} from 'react-redux';
+import { showLoader, hideLoader } from "../../actions/application";
 
 import { 
   Card,
@@ -14,7 +14,8 @@ import {
   Label,
   Input,
   Form,
-  FormGroup
+  FormGroup,
+  FormFeedback
  } from 'reactstrap';
 
 
@@ -26,6 +27,7 @@ import {
       movieTitle: "",
       movieYear: "",
       movieList: [],
+      invalidField: false,
     };
       
     this.publish = this.publish.bind(this);
@@ -36,12 +38,14 @@ import {
     this.setState({
       [target.name]: target.value
     });
+    if (target.name === 'movieTitle') {
+      this.setState({
+        invalidField: false
+      });
+    }
   }
 
   handleMovieClick(movie) {
-    // let history = useHistory();
-    console.log(movie);
-    // context.router.history.push('/my-new-location')
     this.props.history.push({
       pathname: '/movieInfo',
       imdbID: movie.imdbID,
@@ -49,57 +53,71 @@ import {
   }
 
   publish() {
-    MovieService.findByTitle({title: this.state.movieTitle, year: this.state.movieYear})
-      .then(response => {
-        this.setState({
-          movieList: response.data.Search
+    if (this.state.movieTitle.length > 0) {
+      this.props.dispatch( showLoader());
+  
+      MovieService.findByTitle({title: this.state.movieTitle, year: this.state.movieYear})
+        .then(response => {
+          this.setState({
+            movieList: response.data.Search
+          });
+          this.props.dispatch( hideLoader());
+        })
+        .catch(e => {
+          console.log(e);
         });
-      })
-      .catch(e => {
-        console.log(e);
+    } else {
+      this.setState({
+        invalidField: true
       });
+    }
   }
 
   render() { 
     return (
       <div className="Home">
         <header className="Home-header">
-          {/* <Button onClick={() => this.createOrder(1,1)}>Abrir Comanda</Button> */}
           <h3>Movie Search</h3>
           <Row>
             <Col sm="12">
               <Card body inverse style={{ backgroundColor: 'white' }}>
                 <CardBody className="Card-body">
                   <Form>
-                    <FormGroup row>
-                      <Col sm={6}>
-                        <Label for="movieTitle">Title: </Label>
-                      </Col>
-                      <Col sm={6}>
-                        <Input 
-                          type="text"
-                          name="movieTitle"
-                          id="movieTitle"
-                          placeholder="Insert the movie title here"
-                          value={ this.state.movieTitle }
-                          onChange={ this.handleChange }
-                          />
-                      </Col>
+                    <FormGroup>
+                      <Row>
+                        <Col sm={2}>
+                          <Label for="movieTitle">Title: </Label>
+                        </Col>
+                        <Col sm={10}>
+                          <Input 
+                            type="text"
+                            name="movieTitle"
+                            id="movieTitle"
+                            placeholder="Insert the movie title here"
+                            value={ this.state.movieTitle }
+                            onChange={ this.handleChange }
+                            invalid={this.state.invalidField}
+                            />
+                          <FormFeedback>Required Field!</FormFeedback>
+                        </Col>
+                      </Row>
                     </FormGroup>
-                    <FormGroup row>
-                      <Col sm={6}>
-                        <Label for="movieYear">Year:</Label>
-                      </Col>
-                      <Col sm={6}>
-                        <Input
-                          type="numer"
-                          name="movieYear"
-                          id="movieYear"
-                          placeholder="Insert the movie year here"
-                          value={ this.state.movieYear }
-                          onChange={ this.handleChange }
-                          />
-                      </Col>
+                    <FormGroup>
+                      <Row>
+                        <Col sm={2}>
+                          <Label for="movieYear">Year:</Label>
+                        </Col>
+                        <Col sm={10}>
+                          <Input
+                            type="numer"
+                            name="movieYear"
+                            id="movieYear"
+                            placeholder="Insert the movie year here"
+                            value={ this.state.movieYear }
+                            onChange={ this.handleChange }
+                            />
+                        </Col>
+                      </Row>
                     </FormGroup>
                     <Button onClick={ this.publish }>Submit</Button>
                   </Form>
@@ -112,7 +130,7 @@ import {
           <div className="col-md-12">
             <br></br>
             <h4>Search Result: </h4>
-            {this.state.movieList.length === 0 && <span>No results to show</span>}
+            {( !this.state.movieList || typeof this.state.movieList === 'undefined' || this.state.movieList.length === 0 ) && <span>No results to show</span>}
             <ul className="list-group">
               {this.state.movieList &&
                 this.state.movieList.map((movie) => (
@@ -128,4 +146,5 @@ import {
   }
 }
 
-export default withRouter(Home);
+const mapStateToProps = state =>({})
+export default connect(mapStateToProps)(Home);

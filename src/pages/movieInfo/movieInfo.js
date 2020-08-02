@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './movieInfo.css';
 import MovieService from "../../services/movieService";
-import {withRouter} from 'react-router';
+import {connect} from 'react-redux';
+import { showLoader, hideLoader } from "../../actions/application";
 
 import { 
   Card,
@@ -36,12 +37,13 @@ import {
   }
 
   getMovieInfo(id) {
+    this.props.dispatch( showLoader());
     MovieService.findById(id)
       .then(response => {
-        console.log('Response', response.data);
         this.setState({
           movie: response.data
         });
+        this.props.dispatch( hideLoader());
       })
       .catch(e => {
         console.log(e);
@@ -208,5 +210,6 @@ import {
     );
   }
 }
+const mapStateToProps = state =>({})
 
-export default withRouter(MovieInfo);
+export default connect(mapStateToProps)(MovieInfo);
